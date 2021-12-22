@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.habit {
+  text-decoration: none;
+  opacity: 1;
+}
+.habit.done {
+  text-decoration: line-through;
+  opacity: 0.5;
+  color: gray;
+}

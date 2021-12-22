@@ -1,13 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { useState } from "react";
+import "../App.css";
 
 function HabitTracker() {
   const [habitList, setHabit] = useState<string[]>([]);
   const [habit, updateAHabit] = useState("");
+  const [note, writeNote] = useState("");
+
+  function CreateHabit(props: any) {
+    const [className, updateCheck] = useState("");
+
+    function handleCheckChange(e: any) {
+      const newClassName = e.target.checked ? "habit done" : "habit";
+      updateCheck(newClassName);
+    }
+    return (
+      <label className={className}>
+        {props.habit}
+        <input
+          type="checkbox"
+          onChange={(e) => {
+            handleCheckChange(e);
+          }}
+        ></input>
+      </label>
+    );
+  }
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    alert(`You have added the ${habit} habit`);
+
     setHabit([...habitList, habit]);
     updateAHabit("");
   };
@@ -15,18 +37,19 @@ function HabitTracker() {
   const handleChange = (event: any) => {
     const value = event.target.value;
     updateAHabit(value);
-    //console.log(habitList);
   };
 
   return (
     <div>
       {/* This is where i'll put in some dummy text*/}
-      <ol>
-        {habitList.map((item) => {
-          return <li key={item}>{item}</li>;
-        })}
-      </ol>
       <form onSubmit={handleSubmit}>
+        <h1> Habits </h1>
+        <ol>
+          {habitList.map((item) => {
+            return <li key={item}>{<CreateHabit habit={item} />}</li>;
+          })}
+        </ol>
+        <hr />
         <label>
           Add a habit <br></br>
           <input
@@ -35,8 +58,12 @@ function HabitTracker() {
             value={habit}
             onChange={handleChange}
           />
+          <br />
+          Add a note to yourself
+          <br />
+          <textarea value={note} onChange={(e) => writeNote(e.target.value)} />
         </label>
-        <input type="submit" />
+        <input type="submit" value="Add habit" />
       </form>
     </div>
   );
